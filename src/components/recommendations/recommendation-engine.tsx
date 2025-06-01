@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { suggestCommunitiesAndEvents, type SuggestCommunitiesAndEventsInput, type SuggestCommunitiesAndEventsOutput } from '@/ai/flows/community-and-event-suggestions';
-import { Loader2, Sparkles, Users, CalendarDays } from 'lucide-react';
+import { Loader2, Sparkles, Users, CalendarDays, MapPin } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { RecommendationResult, UserProfile } from '@/types';
 
@@ -17,19 +17,55 @@ interface RecommendationEngineProps {
 
 export function RecommendationEngine({ userProfile }: RecommendationEngineProps) {
   const [interests, setInterests] = React.useState('');
-  const [location, setLocation] = React.useState(''); // For now, we'll still ask for location
+  const [location, setLocation] = React.useState('');
   const [recommendations, setRecommendations] = React.useState<RecommendationResult | null>(null);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = React.useState(false);
+  const [isFetchingLocation, setIsFetchingLocation] = React.useState(false);
   const { toast } = useToast();
 
   React.useEffect(() => {
     if (userProfile && userProfile.interests.length > 0) {
       setInterests(userProfile.interests.join(', '));
     }
-    // We could potentially try to get location from profile if available,
-    // but for now, we'll keep it as a separate input.
-    // Example: if (userProfile && userProfile.location) setLocation(userProfile.location);
+    // Potentially pre-fill location if available in profile, e.g.,
+    // if (userProfile && userProfile.location) setLocation(userProfile.location);
   }, [userProfile]);
+
+  const handleUseCurrentLocation = () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Geolocation Not Supported",
+        description: "Your browser doesn't support geolocation.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsFetchingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation(`Current Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`);
+        setIsFetchingLocation(false);
+        toast({
+          title: "Location Fetched",
+          description: "Your current location has been set.",
+        });
+      },
+      (error) => {
+        setIsFetchingLocation(false);
+        let errorMessage = "Could not fetch your location.";
+        if (error.code === error.PERMISSION_DENIED) {
+          errorMessage = "Location access denied. Please enable it in your browser settings.";
+        }
+        toast({
+          title: "Location Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
+    );
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +77,7 @@ export function RecommendationEngine({ userProfile }: RecommendationEngineProps)
       });
       return;
     }
-    setIsLoading(true);
+    setIsLoadingSuggestions(true);
     setRecommendations(null);
 
     try {
@@ -61,7 +97,7 @@ export function RecommendationEngine({ userProfile }: RecommendationEngineProps)
         variant: "destructive",
       });
     } finally {
-      setIsLoading(false);
+      setIsLoadingSuggestions(false);
     }
   };
 
@@ -94,20 +130,37 @@ export function RecommendationEngine({ userProfile }: RecommendationEngineProps)
           </div>
           <div>
             <Label htmlFor="location" className="font-medium">Your Location</Label>
-            <Input
-              id="location"
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="e.g., New York, NY"
-              className="mt-1"
-            />
-             <p className="text-xs text-muted-foreground mt-1">Enter your city and state/country.</p>
+            <div className="flex items-center gap-2 mt-1">
+              <Input
+                id="location"
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="e.g., New York, NY or click button"
+                className="flex-grow"
+                disabled={isFetchingLocation}
+              />
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={handleUseCurrentLocation} 
+                disabled={isFetchingLocation}
+                className="shrink-0"
+              >
+                {isFetchingLocation ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <MapPin className="mr-2 h-4 w-4" />
+                )}
+                Use My Location
+              </Button>
+            </div>
+             <p className="text-xs text-muted-foreground mt-1">Enter city/state or use current location.</p>
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" disabled={isLoading} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-            {isLoading ? (
+          <Button type="submit" disabled={isLoadingSuggestions || isFetchingLocation} className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+            {isLoadingSuggestions ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
               <Sparkles className="mr-2 h-4 w-4" />
@@ -154,4 +207,3 @@ export function RecommendationEngine({ userProfile }: RecommendationEngineProps)
     </Card>
   );
 }
-
