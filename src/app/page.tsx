@@ -1,6 +1,8 @@
 
 'use client';
 
+import * as React from 'react'; // Import React for hooks
+import { useState, useEffect } from 'react'; // Import hooks
 import { Header } from '@/components/layout/header';
 import { UserProfileCard } from '@/components/user/user-profile-card';
 import { RecommendationEngine } from '@/components/recommendations/recommendation-engine';
@@ -25,6 +27,12 @@ const mockUserProfile: UserProfile = {
 };
 
 export default function HomePage() {
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
@@ -87,7 +95,7 @@ export default function HomePage() {
         </Tabs>
       </main>
       <footer className="py-6 text-center text-sm text-muted-foreground border-t">
-        © {new Date().getFullYear()} CampusConnect. All rights reserved.
+        {currentYear ? `© ${currentYear} CampusConnect. All rights reserved.` : `© CampusConnect. All rights reserved.`}
       </footer>
     </div>
   );
