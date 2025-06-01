@@ -47,9 +47,7 @@ export const mockEvents: Event[] = [
 export function EventDiscoverySection() {
   return (
     <section className="py-8 md:py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <SectionTitle icon={<Search className="h-6 w-6 text-primary" />} title="Discover Local Events" />
-      </div>
+      {/* The SectionTitle "Discover Local Events" has been removed as per user request */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {mockEvents.map((event) => (
           <EventCard key={event.id} event={event} />
