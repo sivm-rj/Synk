@@ -36,6 +36,7 @@ export default function HomePage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [activeTab, setActiveTab] = useState('discover');
   const router = useRouter();
 
   useEffect(() => {
@@ -64,6 +65,10 @@ export default function HomePage() {
   useEffect(() => {
     if (isClient) { 
       setCurrentYear(new Date().getFullYear());
+      const savedTab = localStorage.getItem('lastActiveTab');
+      if (savedTab) {
+        setActiveTab(savedTab);
+      }
     }
   }, [isClient]);
 
@@ -72,8 +77,16 @@ export default function HomePage() {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('lastActiveTab'); // Clear last active tab on logout
     setIsAuthenticated(false);
     router.push('/login');
+  };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (isClient) {
+      localStorage.setItem('lastActiveTab', value);
+    }
   };
 
   if (!isClient || !isAuthenticated || isLoadingProfile) {
@@ -91,7 +104,7 @@ export default function HomePage() {
     <div className="flex flex-col min-h-screen">
       <Header userProfile={displayProfile} handleLogout={handleLogout} />
       <main className="flex-grow container mx-auto px-4 py-8">
-        <Tabs defaultValue="discover" className="w-full">
+        <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue="discover" className="w-full">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6">
             <TabsTrigger value="discover">
               <Compass className="mr-2 h-4 w-4" /> Discover
@@ -169,4 +182,3 @@ export default function HomePage() {
     </div>
   );
 }
-
