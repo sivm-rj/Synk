@@ -1,8 +1,9 @@
 
 'use client';
 
-import * as React from 'react'; // Import React for hooks
-import { useState, useEffect } from 'react'; // Import hooks
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { UserProfileCard } from '@/components/user/user-profile-card';
 import { RecommendationEngine } from '@/components/recommendations/recommendation-engine';
@@ -14,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { CreateEventForm } from '@/components/events/create-event-form';
 import { CreateCommunityForm } from '@/components/communities/create-community-form';
 import { SectionTitle } from '@/components/layout/section-title';
-import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle } from 'lucide-react';
+import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle, Loader2 } from 'lucide-react';
 
 const mockUserProfile: UserProfile = {
   id: 'user123',
@@ -28,10 +29,33 @@ const mockUserProfile: UserProfile = {
 
 export default function HomePage() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
+  const [isClient, setIsClient] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
+    setIsClient(true);
+    const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
+    setIsAuthenticated(loggedInStatus);
+    if (!loggedInStatus) {
+      router.replace('/login');
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (isClient) { // Only run this effect on the client
+      setCurrentYear(new Date().getFullYear());
+    }
+  }, [isClient]);
+
+  if (!isClient || !isAuthenticated) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <Loader2 className="h-16 w-16 text-primary animate-spin" />
+        <p className="mt-4 text-muted-foreground">Loading Synk...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -73,7 +97,7 @@ export default function HomePage() {
           <TabsContent value="communities">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Communities & Discussions" />
-              <CreateCommunityForm>
+               <CreateCommunityForm>
                 <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
                   <PlusCircle className="mr-2 h-5 w-5" /> Create New Community
                 </Button>
@@ -95,7 +119,7 @@ export default function HomePage() {
         </Tabs>
       </main>
       <footer className="py-6 text-center text-sm text-muted-foreground border-t">
-        {currentYear ? `© ${currentYear} CampusConnect. All rights reserved.` : `© CampusConnect. All rights reserved.`}
+        {currentYear ? `© ${currentYear} Synk. All rights reserved.` : `© Synk. All rights reserved.`}
       </footer>
     </div>
   );
