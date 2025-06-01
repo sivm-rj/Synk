@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { CalendarDays, MapPin, Users, ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface EventCardProps {
   event: Event;
@@ -42,8 +43,10 @@ export function EventCard({ event }: EventCardProps) {
         {event.community && <p className="text-xs text-muted-foreground">Community: {event.community}</p>}
       </CardContent>
       <CardFooter>
-        <Button variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
-          View Details <ExternalLink className="ml-2 h-4 w-4" />
+        <Button variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
+          <Link href={`/events/${event.id}`}>
+            View Details <ExternalLink className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </CardFooter>
     </Card>
