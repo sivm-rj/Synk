@@ -36,16 +36,8 @@ export const mockForumThreads: ForumThread[] = [
 export function ForumsSection() {
   return (
     <section className="pt-2 pb-8 md:pb-12">
-      <div className="flex flex-col md:flex-row justify-end items-start md:items-center mb-6">
-        {/* SectionTitle for "Active Discussions" has been removed to avoid redundancy */}
-        <div className="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
-          <Button variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Start New Discussion
-          </Button>
-        </div>
-      </div>
-      <div className="space-y-6">
+      {/* The "Start New Discussion" button has been moved to a dropdown in page.tsx */}
+      <div className="space-y-6 mt-6">
         {mockForumThreads.map((thread) => (
           <ForumThreadCard key={thread.id} thread={thread} />
         ))}
@@ -53,4 +45,3 @@ export function ForumsSection() {
     </section>
   );
 }
-

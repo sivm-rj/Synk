@@ -14,9 +14,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { CreateEventForm } from '@/components/events/create-event-form';
 import { CreateCommunityForm } from '@/components/communities/create-community-form';
+import { CreateDiscussionForm } from '@/components/forums/create-discussion-form';
 import { SectionTitle } from '@/components/layout/section-title';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles, MessageSquare } from 'lucide-react';
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -137,11 +139,25 @@ export default function HomePage() {
           <TabsContent value="communities">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
               <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Communities & Discussions" />
-               <CreateCommunityForm>
-                <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
-                  <PlusCircle className="mr-2 h-5 w-5" /> Create New Community
-                </Button>
-              </CreateCommunityForm>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <PlusCircle className="mr-2 h-5 w-5" /> Create
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <CreateCommunityForm>
+                    <DropdownMenuItem>
+                      <Users className="mr-2 h-4 w-4" /> New Community
+                    </DropdownMenuItem>
+                  </CreateCommunityForm>
+                  <CreateDiscussionForm>
+                    <DropdownMenuItem>
+                      <MessageSquare className="mr-2 h-4 w-4" /> New Discussion
+                    </DropdownMenuItem>
+                  </CreateDiscussionForm>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
             <ForumsSection />
           </TabsContent>
