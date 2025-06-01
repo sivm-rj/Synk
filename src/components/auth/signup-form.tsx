@@ -56,11 +56,16 @@ export function SignupForm() {
     // In a real app, you'd save the user to a database and handle auth tokens here
 
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userName', data.name);
+    localStorage.setItem('userEmail', data.email);
+    // Clear any existing profile to force creation of a new one
+    localStorage.removeItem('userProfile');
+
     toast({
       title: 'Signup Successful!',
-      description: 'Welcome to Synk. You are now logged in.',
+      description: 'Welcome to Synk. Please complete your profile.',
     });
-    router.push('/');
+    router.push('/create-profile');
     setIsLoading(false);
   }
 

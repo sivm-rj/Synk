@@ -17,7 +17,7 @@ import { CreateCommunityForm } from '@/components/communities/create-community-f
 import { SectionTitle } from '@/components/layout/section-title';
 import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle, Loader2 } from 'lucide-react';
 
-const mockUserProfile: UserProfile = {
+const initialMockUserProfile: UserProfile = {
   id: 'user123',
   name: 'Alex Johnson',
   avatarUrl: 'https://placehold.co/200x200.png',
@@ -31,24 +31,44 @@ export default function HomePage() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
     const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsAuthenticated(loggedInStatus);
+
     if (!loggedInStatus) {
       router.replace('/login');
+    } else {
+      const storedProfile = localStorage.getItem('userProfile');
+      if (storedProfile) {
+        try {
+          setUserProfile(JSON.parse(storedProfile));
+        } catch (e) {
+          console.error("Failed to parse user profile from localStorage", e);
+          setUserProfile(initialMockUserProfile); // Fallback to mock if parsing fails
+        }
+      } else {
+         // If no profile in localStorage, user might need to create one or it's a fresh login
+        // For now, let's check if they just signed up (and should have been redirected to create-profile)
+        // Or, if they are returning and somehow skipped profile creation, we might redirect them.
+        // For this iteration, if no profile, we'll use mock, assuming create-profile handles new users.
+        setUserProfile(initialMockUserProfile);
+      }
     }
+    setIsLoadingProfile(false);
   }, [router]);
 
   useEffect(() => {
-    if (isClient) { // Only run this effect on the client
+    if (isClient) { 
       setCurrentYear(new Date().getFullYear());
     }
   }, [isClient]);
 
-  if (!isClient || !isAuthenticated) {
+  if (!isClient || !isAuthenticated || isLoadingProfile) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-16 w-16 text-primary animate-spin" />
@@ -56,6 +76,8 @@ export default function HomePage() {
       </div>
     );
   }
+  
+  const displayProfile = userProfile || initialMockUserProfile;
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -109,10 +131,10 @@ export default function HomePage() {
           <TabsContent value="profile">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-1 space-y-8">
-                <UserProfileCard profile={mockUserProfile} />
+                <UserProfileCard profile={displayProfile} />
               </div>
               <div className="md:col-span-2 space-y-8">
-                 <RecommendationEngine />
+                 <RecommendationEngine userProfile={displayProfile} />
               </div>
             </div>
           </TabsContent>

@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -8,14 +9,27 @@ import { Label } from '@/components/ui/label';
 import { suggestCommunitiesAndEvents, type SuggestCommunitiesAndEventsInput, type SuggestCommunitiesAndEventsOutput } from '@/ai/flows/community-and-event-suggestions';
 import { Loader2, Sparkles, Users, CalendarDays } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import type { RecommendationResult } from '@/types';
+import type { RecommendationResult, UserProfile } from '@/types';
 
-export function RecommendationEngine() {
-  const [interests, setInterests] = useState('');
-  const [location, setLocation] = useState('');
-  const [recommendations, setRecommendations] = useState<RecommendationResult | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+interface RecommendationEngineProps {
+  userProfile: UserProfile | null;
+}
+
+export function RecommendationEngine({ userProfile }: RecommendationEngineProps) {
+  const [interests, setInterests] = React.useState('');
+  const [location, setLocation] = React.useState(''); // For now, we'll still ask for location
+  const [recommendations, setRecommendations] = React.useState<RecommendationResult | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
+
+  React.useEffect(() => {
+    if (userProfile && userProfile.interests.length > 0) {
+      setInterests(userProfile.interests.join(', '));
+    }
+    // We could potentially try to get location from profile if available,
+    // but for now, we'll keep it as a separate input.
+    // Example: if (userProfile && userProfile.location) setLocation(userProfile.location);
+  }, [userProfile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +73,9 @@ export function RecommendationEngine() {
           Personalized Suggestions
         </CardTitle>
         <CardDescription>
-          Tell us your interests and location to discover communities and events tailored for you.
+          {userProfile && userProfile.interests.length > 0 
+            ? "Refine your interests or location to get updated suggestions."
+            : "Tell us your interests and location to discover communities and events tailored for you."}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -138,3 +154,4 @@ export function RecommendationEngine() {
     </Card>
   );
 }
+
