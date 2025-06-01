@@ -56,23 +56,23 @@ export function Header({ userProfile, handleLogout }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-7xl items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-sm supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 max-w-7xl items-center justify-between"> {/* Increased height to h-16 */}
         <Link href="/" className="flex items-center space-x-2">
-          <Zap className="h-6 w-6 text-primary" />
-          <span className="font-bold sm:inline-block font-headline text-xl">
+          <Zap className="h-7 w-7 text-primary" /> {/* Increased icon size */}
+          <span className="font-bold sm:inline-block font-headline text-2xl text-foreground"> {/* Increased text size and changed color */}
             Synk
           </span>
         </Link>
         
         <div className="flex-1 flex justify-center px-4">
-          <form onSubmit={handleSearchSubmit} className="w-full max-w-lg">
+          <form onSubmit={handleSearchSubmit} className="w-full max-w-md"> {/* max-w-md from lg */}
             <div className="relative">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <SearchIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" /> {/* Increased icon size and left padding */}
               <Input
                 type="search"
-                placeholder="Search events, communities, forums..."
-                className="h-9 pl-10 w-full"
+                placeholder="Search Synk..." // Simplified placeholder
+                className="h-10 pl-11 w-full rounded-full bg-secondary border-transparent focus:bg-background focus:border-primary" // Changed to rounded-full, new bg, border, focus style
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -84,12 +84,12 @@ export function Header({ userProfile, handleLogout }: HeaderProps) {
           {isClient && isAuthenticated && userProfile && (
             <Dialog open={isProfileDialogOpen} onOpenChange={setIsProfileDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <User className="h-5 w-5" />
+                <Button variant="ghost" className="rounded-full p-0 w-10 h-10 hover:bg-secondary"> {/* Custom size and hover */}
+                  <User className="h-5 w-5 text-foreground" />
                   <span className="sr-only">Open Profile</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-lg">
+              <DialogContent className="sm:max-w-md rounded-xl"> {/* Increased rounding */}
                 <DialogHeader>
                   <DialogTitle className="font-headline text-center text-2xl">My Profile</DialogTitle>
                   <DialogDescription className="text-center">
@@ -100,7 +100,7 @@ export function Header({ userProfile, handleLogout }: HeaderProps) {
                   <UserProfileCard profile={userProfile} />
                 </div>
                 <DialogFooter className="sm:justify-center border-t pt-4">
-                  <Button variant="outline" onClick={onLogoutClick} className="w-full sm:w-auto">
+                  <Button variant="outline" onClick={onLogoutClick} className="w-full sm:w-auto rounded-md">
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </Button>

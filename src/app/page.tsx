@@ -112,30 +112,30 @@ export default function HomePage() {
   const displayProfile = userProfile || initialMockUserProfile;
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background">
       <Header userProfile={displayProfile} handleLogout={handleLogout} />
       <main className="flex-grow container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={handleTabChange} defaultValue="discover" className="w-full">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-8"> {/* Increased mb-6 to mb-8 */}
             <TabsTrigger value="discover">
-              <Compass className="mr-2 h-4 w-4" /> Discover
+              <Compass className="mr-2 h-5 w-5" /> Discover {/* Increased icon size */}
             </TabsTrigger>
             <TabsTrigger value="events">
-              <CalendarDays className="mr-2 h-4 w-4" /> Events
+              <CalendarDays className="mr-2 h-5 w-5" /> Events {/* Increased icon size */}
             </TabsTrigger>
             <TabsTrigger value="communities">
-              <Users className="mr-2 h-4 w-4" /> Communities
+              <Users className="mr-2 h-5 w-5" /> Communities {/* Increased icon size */}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="discover">
-            <div className="space-y-8">
-              <Accordion type="single" collapsible className="w-full mb-8">
-                <AccordionItem value="item-1" className="border border-border rounded-lg shadow-sm">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]>svg]:text-primary">
+            <div className="space-y-10"> {/* Increased space-y-8 to space-y-10 */}
+              <Accordion type="single" collapsible className="w-full mb-8 border-none shadow-none"> {/* Removed border and shadow from accordion container */}
+                <AccordionItem value="item-1" className="border rounded-xl shadow-md"> {/* Added rounding and shadow to item */}
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]>svg]:text-primary text-lg"> {/* Increased text size */}
                     <div className="flex items-center gap-2">
-                      <Sparkles className="h-5 w-5 text-primary" />
-                      <span className="font-semibold text-lg font-headline">Get Personalized Suggestions</span>
+                      <Sparkles className="h-6 w-6 text-primary" /> {/* Increased icon size */}
+                      <span className="font-semibold font-headline">Get Personalized Suggestions</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-6 pb-6">
@@ -149,9 +149,9 @@ export default function HomePage() {
 
           <TabsContent value="events">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <SectionTitle icon={<CalendarDays className="mr-2 h-6 w-6 text-primary" />} title="All Events" />
+              <SectionTitle icon={<CalendarDays className="mr-3 h-7 w-7 text-primary" />} title="All Events" /> {/* Increased icon size and margin */}
               <CreateEventForm>
-                <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button variant="default" className="mt-4 md:mt-0 rounded-lg text-base py-2.5 px-5"> {/* Used primary color, slightly larger text and padding */}
                   <PlusCircle className="mr-2 h-5 w-5" />
                   Create New Event
                 </Button>
@@ -162,17 +162,17 @@ export default function HomePage() {
 
           <TabsContent value="communities">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Explore Communities" />
+               <SectionTitle icon={<Users className="mr-3 h-7 w-7 text-primary" />} title="Explore Communities" /> {/* Increased icon size and margin */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <Button variant="default" className="mt-4 md:mt-0 rounded-lg text-base py-2.5 px-5"> {/* Used primary color, slightly larger text and padding */}
                     <PlusCircle className="mr-2 h-5 w-5" /> Create
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="rounded-lg shadow-lg"> {/* Added rounding and shadow */}
                   <CreateCommunityForm onCommunityCreated={handleAddCommunity}>
-                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                      <Users className="mr-2 h-4 w-4" /> New Community
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="py-2 px-3">
+                      <Users className="mr-2 h-5 w-5" /> New Community
                     </DropdownMenuItem>
                   </CreateCommunityForm>
                 </DropdownMenuContent>
@@ -185,16 +185,21 @@ export default function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10">
-                <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold text-foreground mb-2 font-headline">No Communities Yet</h3>
+              <div className="text-center py-10 mt-8 border border-dashed rounded-xl"> {/* Added border and rounding */}
+                <Users className="mx-auto h-16 w-16 text-muted-foreground mb-4" /> {/* Increased icon size */}
+                <h3 className="text-2xl font-semibold text-foreground mb-2 font-headline">No Communities Yet</h3> {/* Increased text size */}
                 <p className="text-muted-foreground">Be the first to create one or check back later!</p>
+                 <CreateCommunityForm onCommunityCreated={handleAddCommunity}>
+                   <Button variant="default" className="mt-6 rounded-lg">
+                    <PlusCircle className="mr-2 h-5 w-5" /> Create First Community
+                  </Button>
+                </CreateCommunityForm>
               </div>
             )}
           </TabsContent>
         </Tabs>
       </main>
-      <footer className="py-6 text-center text-sm text-muted-foreground border-t">
+      <footer className="py-8 text-center text-base text-muted-foreground border-t mt-12"> {/* Increased padding and text size */}
         {currentYear ? `© ${currentYear} Synk. All rights reserved.` : `© Synk. All rights reserved.`}
       </footer>
     </div>
