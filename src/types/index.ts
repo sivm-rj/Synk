@@ -1,3 +1,4 @@
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -36,7 +37,7 @@ export interface ForumThread {
   author: string;
   lastActivity: string;
   replies: number;
-  community?: string;
+  community?: string; // This would be the ID of the community it belongs to
   relatedEvent?: string;
 }
 
@@ -44,3 +45,4 @@ export interface RecommendationResult {
   suggestedCommunities: string[];
   suggestedEvents: string[];
 }
+

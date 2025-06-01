@@ -8,17 +8,19 @@ import { Header } from '@/components/layout/header';
 import { UserProfileCard } from '@/components/user/user-profile-card';
 import { RecommendationEngine } from '@/components/recommendations/recommendation-engine';
 import { EventDiscoverySection } from '@/components/events/event-discovery-section';
-import { ForumsSection } from '@/components/forums/forums-section';
-import type { UserProfile } from '@/types';
+import { CommunityCard } from '@/components/communities/community-card';
+import type { UserProfile, Community } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { CreateEventForm } from '@/components/events/create-event-form';
 import { CreateCommunityForm } from '@/components/communities/create-community-form';
-import { CreateDiscussionForm } from '@/components/forums/create-discussion-form';
+// CreateDiscussionForm is not used from main page dropdown anymore
+// import { CreateDiscussionForm } from '@/components/forums/create-discussion-form';
 import { SectionTitle } from '@/components/layout/section-title';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles, MessageSquare } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -30,6 +32,31 @@ const initialMockUserProfile: UserProfile = {
   isVerified: true,
 };
 
+export const mockCommunitiesData: Community[] = [
+  {
+    id: 'comm1',
+    name: 'City Coders',
+    description: 'A vibrant community for developers in the city. Share, learn, and connect with fellow tech enthusiasts!',
+    memberCount: 120,
+    imageUrl: 'https://placehold.co/600x400.png',
+  },
+  {
+    id: 'comm2',
+    name: 'Outdoor Adventures Club',
+    description: 'Exploring the great outdoors together. Join us for hikes, camping trips, and nature photography sessions.',
+    memberCount: 75,
+    imageUrl: 'https://placehold.co/600x400.png',
+  },
+  {
+    id: 'comm3',
+    name: 'Founders Hub',
+    description: 'A supportive network for startup founders and entrepreneurs. Share challenges, successes, and resources.',
+    memberCount: 250,
+    imageUrl: 'https://placehold.co/600x400.png',
+  },
+];
+
+
 export default function HomePage() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
@@ -37,7 +64,9 @@ export default function HomePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [activeTab, setActiveTab] = useState('discover');
+  const [communities, setCommunities] = useState<Community[]>(mockCommunitiesData);
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsClient(true);
@@ -53,7 +82,7 @@ export default function HomePage() {
           setUserProfile(JSON.parse(storedProfile));
         } catch (e) {
           console.error("Failed to parse user profile from localStorage", e);
-          setUserProfile(initialMockUserProfile); // Fallback to mock if parsing fails
+          setUserProfile(initialMockUserProfile); 
         }
       } else {
         setUserProfile(initialMockUserProfile);
@@ -77,7 +106,7 @@ export default function HomePage() {
     localStorage.removeItem('userProfile');
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
-    localStorage.removeItem('lastActiveTab'); // Clear last active tab on logout
+    localStorage.removeItem('lastActiveTab');
     setIsAuthenticated(false);
     router.push('/login');
   };
@@ -87,6 +116,14 @@ export default function HomePage() {
     if (isClient) {
       localStorage.setItem('lastActiveTab', value);
     }
+  };
+
+  const handleAddCommunity = (newCommunity: Community) => {
+    setCommunities(prevCommunities => [newCommunity, ...prevCommunities]);
+    toast({
+      title: "Community Added",
+      description: `${newCommunity.name} is now in your list.`,
+    });
   };
 
   if (!isClient || !isAuthenticated || isLoadingProfile) {
@@ -151,7 +188,7 @@ export default function HomePage() {
 
           <TabsContent value="communities">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-              <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Communities & Discussions" />
+              <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Explore Communities" />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
@@ -159,20 +196,35 @@ export default function HomePage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <CreateCommunityForm>
-                    <DropdownMenuItem>
+                  <CreateCommunityForm onCommunityCreated={handleAddCommunity}>
+                    <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                       <Users className="mr-2 h-4 w-4" /> New Community
                     </DropdownMenuItem>
                   </CreateCommunityForm>
-                  <CreateDiscussionForm>
-                    <DropdownMenuItem>
-                      <MessageSquare className="mr-2 h-4 w-4" /> New Discussion
-                    </DropdownMenuItem>
-                  </CreateDiscussionForm>
+                  {/* 
+                    CreateDiscussionForm DropdownMenuItem removed as discussions will be part of communities.
+                    <CreateDiscussionForm>
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        <MessageSquare className="mr-2 h-4 w-4" /> New Discussion
+                      </DropdownMenuItem>
+                    </CreateDiscussionForm> 
+                  */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <ForumsSection />
+            {communities.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                {communities.map((community) => (
+                  <CommunityCard key={community.id} community={community} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-10">
+                <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2">No Communities Yet</h3>
+                <p className="text-muted-foreground">Be the first to create one or check back later!</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </main>

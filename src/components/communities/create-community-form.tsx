@@ -27,6 +27,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import * as React from 'react';
+import type { Community } from '@/types';
 
 const communityFormSchema = z.object({
   name: z.string().min(3, { message: "Community name must be at least 3 characters." }),
@@ -38,9 +39,10 @@ type CommunityFormValues = z.infer<typeof communityFormSchema>;
 
 interface CreateCommunityFormProps {
   children: React.ReactNode; // Trigger element
+  onCommunityCreated: (newCommunity: Community) => void;
 }
 
-export function CreateCommunityForm({ children }: CreateCommunityFormProps) {
+export function CreateCommunityForm({ children, onCommunityCreated }: CreateCommunityFormProps) {
   const [open, setOpen] = React.useState(false);
   const { toast } = useToast();
   const form = useForm<CommunityFormValues>({
@@ -54,9 +56,19 @@ export function CreateCommunityForm({ children }: CreateCommunityFormProps) {
 
   async function onSubmit(data: CommunityFormValues) {
     console.log('New Community Data:', data);
+    
+    const newCommunity: Community = {
+        id: Date.now().toString(), // Simple ID for mock purposes
+        name: data.name,
+        description: data.description,
+        imageUrl: data.imageUrl || `https://placehold.co/600x400.png`,
+        memberCount: 1, // Creator is the first member
+    };
+    onCommunityCreated(newCommunity);
+
     toast({
       title: 'Community Created!',
-      description: `The community "${data.name}" has been logged.`,
+      description: `The community "${data.name}" has been created.`,
     });
     form.reset();
     setOpen(false);
