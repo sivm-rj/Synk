@@ -137,7 +137,7 @@ export function CreateProfileForm() {
 
         </CardContent>
         <CardFooter className="flex-col items-stretch space-y-4">
-          <Button type="submit" className="w-full" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={isLoading}>
             {isLoading ? (
               <CheckCircle className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -200,4 +200,3 @@ function FormFieldItem({ name, label, placeholder, icon, form, type = "text", de
     </div>
   );
 }
-

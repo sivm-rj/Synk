@@ -13,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 174 44% 51%; /* Teal #4DB6AC */
+    --primary: 174 60% 50%; /* Brighter Teal #33CCCC */
     --primary-foreground: 0 0% 100%; /* White */
 
     --secondary: 240 4.8% 90%; /* Lighter gray for secondary elements */
@@ -22,7 +22,7 @@
     --muted: 240 4.8% 93%; /* Muted background */
     --muted-foreground: 240 3.8% 46%; /* Muted text */
 
-    --accent: 16 100% 66%; /* Coral #FF7F50 */
+    --accent: 16 100% 60%; /* Richer Coral #FF6633 */
     --accent-foreground: 0 0% 100%; /* White for text on coral */
 
     --destructive: 0 84.2% 60.2%;
@@ -30,7 +30,7 @@
 
     --border: 240 5.9% 88%;
     --input: 240 5.9% 90%;
-    --ring: 174 44% 51%; /* Teal for rings */
+    --ring: 174 60% 50%; /* Brighter Teal for rings */
 
     --radius: 0.5rem;
 
@@ -61,7 +61,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 174 44% 56%; /* Slightly Lighter Teal for dark mode */
+    --primary: 174 60% 55%; /* Slightly Lighter/Brighter Teal for dark mode */
     --primary-foreground: 0 0% 100%; /* White */
 
     --secondary: 240 3.7% 15.9%;
@@ -70,15 +70,15 @@
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
 
-    --accent: 16 100% 70%; /* Slightly Lighter Coral for dark mode */
-    --accent-foreground: 16 100% 10%; /* Dark brown/black for text on accent */
+    --accent: 16 100% 65%; /* Slightly Lighter/Richer Coral for dark mode */
+    --accent-foreground: 0 0% 100%; /* White for text on accent */
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 174 44% 56%; /* Teal for rings in dark mode */
+    --ring: 174 60% 55%; /* Brighter Teal for rings in dark mode */
     
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;

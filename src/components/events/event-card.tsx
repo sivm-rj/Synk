@@ -11,7 +11,7 @@ interface EventCardProps {
 
 export function EventCard({ event }: EventCardProps) {
   return (
-    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <div className="relative h-48 w-full">
         <Image 
           src={event.imageUrl} 
@@ -25,7 +25,7 @@ export function EventCard({ event }: EventCardProps) {
         <CardTitle className="font-headline text-xl">{event.name}</CardTitle>
         <CardDescription>{event.description.substring(0,100)}{event.description.length > 100 ? '...' : ''}</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-2 text-sm">
+      <CardContent className="space-y-2 text-sm flex-grow">
         <div className="flex items-center text-muted-foreground">
           <CalendarDays className="h-4 w-4 mr-2 text-primary" />
           <span>{event.date} at {event.time}</span>
@@ -42,7 +42,7 @@ export function EventCard({ event }: EventCardProps) {
         {event.community && <p className="text-xs text-muted-foreground">Community: {event.community}</p>}
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="w-full">
+        <Button variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
           View Details <ExternalLink className="ml-2 h-4 w-4" />
         </Button>
       </CardFooter>
