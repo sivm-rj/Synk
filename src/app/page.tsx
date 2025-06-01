@@ -15,7 +15,8 @@ import { Button } from '@/components/ui/button';
 import { CreateEventForm } from '@/components/events/create-event-form';
 import { CreateCommunityForm } from '@/components/communities/create-community-form';
 import { SectionTitle } from '@/components/layout/section-title';
-import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle, Loader2 } from 'lucide-react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle, Loader2, Sparkles } from 'lucide-react';
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -99,7 +100,19 @@ export default function HomePage() {
 
           <TabsContent value="discover">
             <div className="space-y-8">
-              <RecommendationEngine userProfile={displayProfile} />
+              <Accordion type="single" collapsible className="w-full mb-8">
+                <AccordionItem value="item-1" className="border border-border rounded-lg shadow-sm">
+                  <AccordionTrigger className="px-6 py-4 hover:no-underline [&[data-state=open]>svg]:text-primary">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      <span className="font-semibold text-lg font-headline">Get Personalized Suggestions</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-6">
+                    <RecommendationEngine userProfile={displayProfile} />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
               <EventDiscoverySection />
             </div>
           </TabsContent>
