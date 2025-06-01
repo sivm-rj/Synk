@@ -53,8 +53,6 @@ export default function HomePage() {
         }
       } else {
          // If no profile in localStorage, user might need to create one or it's a fresh login
-        // For now, let's check if they just signed up (and should have been redirected to create-profile)
-        // Or, if they are returning and somehow skipped profile creation, we might redirect them.
         // For this iteration, if no profile, we'll use mock, assuming create-profile handles new users.
         setUserProfile(initialMockUserProfile);
       }
@@ -100,7 +98,10 @@ export default function HomePage() {
           </TabsList>
 
           <TabsContent value="discover">
-            <EventDiscoverySection />
+            <div className="space-y-8">
+              <RecommendationEngine userProfile={displayProfile} />
+              <EventDiscoverySection />
+            </div>
           </TabsContent>
 
           <TabsContent value="events">
@@ -129,14 +130,7 @@ export default function HomePage() {
           </TabsContent>
 
           <TabsContent value="profile">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="md:col-span-1 space-y-8">
-                <UserProfileCard profile={displayProfile} />
-              </div>
-              <div className="md:col-span-2 space-y-8">
-                 <RecommendationEngine userProfile={displayProfile} />
-              </div>
-            </div>
+            <UserProfileCard profile={displayProfile} />
           </TabsContent>
         </Tabs>
       </main>
