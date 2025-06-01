@@ -2,9 +2,7 @@
 import type { Event } from '@/types';
 import { EventCard } from './event-card';
 import { SectionTitle } from '@/components/layout/section-title';
-import { CreateEventForm } from './create-event-form';
-import { Button } from '@/components/ui/button';
-import { Search, PlusCircle } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const mockEvents: Event[] = [
   {
@@ -51,12 +49,7 @@ export function EventDiscoverySection() {
     <section className="py-8 md:py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <SectionTitle icon={<Search className="h-6 w-6 text-primary" />} title="Discover Local Events" />
-        <CreateEventForm>
-          <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Create New Event
-          </Button>
-        </CreateEventForm>
+        {/* Create New Event button moved to page.tsx within the Events tab */}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {mockEvents.map((event) => (

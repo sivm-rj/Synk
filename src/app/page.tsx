@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Header } from '@/components/layout/header';
 import { UserProfileCard } from '@/components/user/user-profile-card';
 import { RecommendationEngine } from '@/components/recommendations/recommendation-engine';
@@ -6,7 +8,11 @@ import { EventDiscoverySection } from '@/components/events/event-discovery-secti
 import { ForumsSection } from '@/components/forums/forums-section';
 import type { UserProfile } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Compass, CalendarDays, Users, User as UserIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CreateEventForm } from '@/components/events/create-event-form';
+import { CreateCommunityForm } from '@/components/communities/create-community-form';
+import { SectionTitle } from '@/components/layout/section-title';
+import { Compass, CalendarDays, Users, User as UserIcon, PlusCircle } from 'lucide-react';
 
 const mockUserProfile: UserProfile = {
   id: 'user123',
@@ -44,11 +50,27 @@ export default function HomePage() {
           </TabsContent>
 
           <TabsContent value="events">
-            {/* For now, also showing EventDiscoverySection here. Can be customized later. */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+              <SectionTitle icon={<CalendarDays className="mr-2 h-6 w-6 text-primary" />} title="All Events" />
+              <CreateEventForm>
+                <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <PlusCircle className="mr-2 h-5 w-5" />
+                  Create New Event
+                </Button>
+              </CreateEventForm>
+            </div>
             <EventDiscoverySection />
           </TabsContent>
 
           <TabsContent value="communities">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+              <SectionTitle icon={<Users className="mr-2 h-6 w-6 text-primary" />} title="Communities & Discussions" />
+              <CreateCommunityForm>
+                <Button variant="default" className="mt-4 md:mt-0 bg-accent hover:bg-accent/90 text-accent-foreground">
+                  <PlusCircle className="mr-2 h-5 w-5" /> Create New Community
+                </Button>
+              </CreateCommunityForm>
+            </div>
             <ForumsSection />
           </TabsContent>
 

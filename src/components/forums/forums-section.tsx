@@ -2,7 +2,6 @@
 import type { ForumThread } from '@/types';
 import { ForumThreadCard } from './forum-thread-card';
 import { SectionTitle } from '@/components/layout/section-title';
-import { CreateCommunityForm } from '@/components/communities/create-community-form';
 import { MessagesSquare, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -39,12 +38,7 @@ export function ForumsSection() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <SectionTitle icon={<MessagesSquare className="h-6 w-6 text-primary" />} title="Active Discussions" />
         <div className="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
-          <CreateCommunityForm>
-            <Button variant="outline">
-              <PlusCircle className="mr-2 h-5 w-5" />
-              Create Community
-            </Button>
-          </CreateCommunityForm>
+          {/* Create Community button moved to page.tsx within the Communities tab */}
           <Button variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground">
             <PlusCircle className="mr-2 h-5 w-5" />
             Start New Discussion
