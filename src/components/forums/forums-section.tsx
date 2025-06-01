@@ -1,9 +1,9 @@
 
 import type { ForumThread } from '@/types';
 import { ForumThreadCard } from './forum-thread-card';
-import { SectionTitle } from '@/components/layout/section-title';
 import { MessagesSquare, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { SectionTitle } from '@/components/layout/section-title';
 
 export const mockForumThreads: ForumThread[] = [
   {
@@ -35,9 +35,9 @@ export const mockForumThreads: ForumThread[] = [
 
 export function ForumsSection() {
   return (
-    <section className="py-8 md:py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <SectionTitle icon={<MessagesSquare className="h-6 w-6 text-primary" />} title="Active Discussions" />
+    <section className="pt-2 pb-8 md:pb-12">
+      <div className="flex flex-col md:flex-row justify-end items-start md:items-center mb-6">
+        {/* SectionTitle for "Active Discussions" has been removed to avoid redundancy */}
         <div className="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
           <Button variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground">
             <PlusCircle className="mr-2 h-5 w-5" />
@@ -53,3 +53,4 @@ export function ForumsSection() {
     </section>
   );
 }
+
