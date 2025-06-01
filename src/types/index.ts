@@ -37,7 +37,8 @@ export interface ForumThread {
   author: string;
   lastActivity: string;
   replies: number;
-  community?: string; // This would be the ID of the community it belongs to
+  communityId?: string; // ID of the community it belongs to
+  communityName?: string; // Name of the community for display
   relatedEvent?: string;
 }
 

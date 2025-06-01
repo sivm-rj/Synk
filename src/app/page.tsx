@@ -14,13 +14,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { CreateEventForm } from '@/components/events/create-event-form';
 import { CreateCommunityForm } from '@/components/communities/create-community-form';
-// CreateDiscussionForm is not used from main page dropdown anymore
-// import { CreateDiscussionForm } from '@/components/forums/create-discussion-form';
 import { SectionTitle } from '@/components/layout/section-title';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles, MessageSquare } from 'lucide-react';
+import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { mockCommunitiesData } from '@/lib/mock-data'; // Import from new location
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -31,31 +30,6 @@ const initialMockUserProfile: UserProfile = {
   interests: ['Coding', 'AI Ethics', 'Hiking', 'Photography', 'Startups'],
   isVerified: true,
 };
-
-export const mockCommunitiesData: Community[] = [
-  {
-    id: 'comm1',
-    name: 'City Coders',
-    description: 'A vibrant community for developers in the city. Share, learn, and connect with fellow tech enthusiasts!',
-    memberCount: 120,
-    imageUrl: 'https://placehold.co/600x400.png',
-  },
-  {
-    id: 'comm2',
-    name: 'Outdoor Adventures Club',
-    description: 'Exploring the great outdoors together. Join us for hikes, camping trips, and nature photography sessions.',
-    memberCount: 75,
-    imageUrl: 'https://placehold.co/600x400.png',
-  },
-  {
-    id: 'comm3',
-    name: 'Founders Hub',
-    description: 'A supportive network for startup founders and entrepreneurs. Share challenges, successes, and resources.',
-    memberCount: 250,
-    imageUrl: 'https://placehold.co/600x400.png',
-  },
-];
-
 
 export default function HomePage() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
@@ -201,14 +175,6 @@ export default function HomePage() {
                       <Users className="mr-2 h-4 w-4" /> New Community
                     </DropdownMenuItem>
                   </CreateCommunityForm>
-                  {/* 
-                    CreateDiscussionForm DropdownMenuItem removed as discussions will be part of communities.
-                    <CreateDiscussionForm>
-                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                        <MessageSquare className="mr-2 h-4 w-4" /> New Discussion
-                      </DropdownMenuItem>
-                    </CreateDiscussionForm> 
-                  */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

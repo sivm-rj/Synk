@@ -17,9 +17,9 @@ export function CommunityCard({ community }: CommunityCardProps) {
         <Image 
           src={community.imageUrl} 
           alt={community.name} 
-          layout="fill" 
-          objectFit="cover" 
-          data-ai-hint="community group gathering" // Generic hint, can be more specific if data allows
+          fill={true}
+          style={{objectFit: 'cover'}}
+          data-ai-hint="community group gathering"
         />
       </div>
       <CardHeader>
@@ -33,10 +33,8 @@ export function CommunityCard({ community }: CommunityCardProps) {
         </div>
       </CardContent>
       <CardFooter>
-        {/* Link to a future community detail page */}
         <Button variant="default" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" asChild>
-          {/* Update href once community detail pages are implemented, e.g., /communities/${community.id} */}
-          <Link href="#"> 
+          <Link href={`/communities/${community.id}`}> 
             View Community <ExternalLink className="ml-2 h-4 w-4" />
           </Link>
         </Button>
@@ -44,4 +42,3 @@ export function CommunityCard({ community }: CommunityCardProps) {
     </Card>
   );
 }
-

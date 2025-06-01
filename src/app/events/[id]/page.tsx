@@ -5,12 +5,12 @@ import * as React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Header } from '@/components/layout/header';
-import { mockEvents } from '@/components/events/event-discovery-section';
+import { mockEvents } from '@/lib/mock-data'; // Import from new location
 import type { Event, UserProfile } from '@/types';
-import { CalendarDays, MapPin, Users, ArrowLeft, Tag, Briefcase, Users2, Loader2 } from 'lucide-react';
+import { CalendarDays, MapPin, Users, ArrowLeft, Briefcase, Users2, Loader2, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SectionTitle } from '@/components/layout/section-title';
 
 const initialMockUserProfile: UserProfile = {
@@ -113,8 +113,8 @@ export default function EventDetailPage() {
             <Image 
               src={event.imageUrl} 
               alt={event.name} 
-              layout="fill" 
-              objectFit="cover"
+              fill={true}
+              style={{objectFit: 'cover'}}
               data-ai-hint="event banner public"
             />
           </div>
@@ -166,6 +166,14 @@ export default function EventDetailPage() {
                 </div>
               </div>
             </div>
+             <div className="border-t pt-6">
+                <h3 className="text-xl font-semibold mb-4 flex items-center font-headline">
+                  <MessageSquare className="mr-2 h-5 w-5 text-primary" />
+                  Event Discussion
+                </h3>
+                <p className="text-muted-foreground">Event-specific discussion forum coming soon!</p>
+                {/* Placeholder for event-specific forum/comments */}
+            </div>
 
             <div className="pt-4">
                  <Button size="lg" className="w-full md:w-auto bg-accent hover:bg-accent/90 text-accent-foreground text-base py-3 px-6">
@@ -181,4 +189,3 @@ export default function EventDetailPage() {
     </div>
   );
 }
-
