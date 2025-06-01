@@ -5,7 +5,7 @@ import { SectionTitle } from '@/components/layout/section-title';
 import { MessagesSquare, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const mockForumThreads: ForumThread[] = [
+export const mockForumThreads: ForumThread[] = [
   {
     id: '1',
     title: 'Favorite spots for remote work in the city?',
@@ -21,6 +21,7 @@ const mockForumThreads: ForumThread[] = [
     lastActivity: '5 hours ago',
     replies: 8,
     relatedEvent: 'Weekend Hike at North Peak',
+    community: 'Outdoor Adventures Club',
   },
   {
     id: '3',
@@ -38,7 +39,6 @@ export function ForumsSection() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <SectionTitle icon={<MessagesSquare className="h-6 w-6 text-primary" />} title="Active Discussions" />
         <div className="flex flex-col sm:flex-row gap-2 mt-4 md:mt-0">
-          {/* Create Community button moved to page.tsx within the Communities tab */}
           <Button variant="default" className="bg-accent hover:bg-accent/90 text-accent-foreground">
             <PlusCircle className="mr-2 h-5 w-5" />
             Start New Discussion

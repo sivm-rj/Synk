@@ -4,7 +4,7 @@ import { EventCard } from './event-card';
 import { SectionTitle } from '@/components/layout/section-title';
 import { Search } from 'lucide-react';
 
-const mockEvents: Event[] = [
+export const mockEvents: Event[] = [
   {
     id: '1',
     name: 'Tech Meetup: Future of AI',
@@ -49,7 +49,6 @@ export function EventDiscoverySection() {
     <section className="py-8 md:py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <SectionTitle icon={<Search className="h-6 w-6 text-primary" />} title="Discover Local Events" />
-        {/* Create New Event button moved to page.tsx within the Events tab */}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {mockEvents.map((event) => (
