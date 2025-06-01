@@ -1,9 +1,9 @@
+
 import type { UserProfile } from '@/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, UserCircle2 } from 'lucide-react';
-import Image from 'next/image';
 
 interface UserProfileCardProps {
   profile: UserProfile;

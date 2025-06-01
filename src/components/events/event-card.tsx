@@ -1,3 +1,4 @@
+
 import type { Event } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +18,7 @@ export function EventCard({ event }: EventCardProps) {
           alt={event.name} 
           layout="fill" 
           objectFit="cover" 
-          data-ai-hint="event gathering" 
+          data-ai-hint="event gathering"
         />
       </div>
       <CardHeader>
