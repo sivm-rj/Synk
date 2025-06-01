@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import type { UserProfile } from '@/types';
-import { UserCircle, Image as ImageIcon, Briefcase, Info, Sparkles, CheckCircle, Users, User } from 'lucide-react';
+import { UserCircle, Image as ImageIcon, Briefcase, Info, Sparkles, CheckCircle, Users, User as UserIcon } from 'lucide-react'; // Renamed User to UserIcon
 
 const profileFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -57,30 +57,28 @@ export function CreateProfileForm() {
   });
 
   React.useEffect(() => {
-    // Ensure defaultValues are set once localStorage is available
     form.reset(defaultValues);
   }, [defaultValues, form]);
 
 
   async function onSubmit(data: ProfileFormValues) {
     setIsLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000)); 
 
     const userEmail = localStorage.getItem('userEmail') || '';
     const newProfile: UserProfile = {
-      id: userEmail, // Use email as ID for simplicity
+      id: userEmail, 
       name: data.name,
-      avatarUrl: data.avatarUrl || 'https://placehold.co/200x200.png', // Default placeholder
+      avatarUrl: data.avatarUrl || 'https://placehold.co/200x200.png', 
       organization: data.organization || '',
       bio: data.bio,
       interests: data.interests.split(',').map(interest => interest.trim()).filter(interest => interest),
-      isVerified: false, // New profiles are not verified by default
+      isVerified: false, 
     };
 
     localStorage.setItem('userProfile', JSON.stringify(newProfile));
     console.log('Profile Created/Updated:', newProfile);
 
-    // Community Suggestion Logic
     const emailDomain = userEmail.split('@')[1];
     if (emailDomain === 'google.com') {
       setSuggestedCommunity('Google Community');
@@ -95,8 +93,7 @@ export function CreateProfileForm() {
       description: 'Your profile has been successfully created/updated.',
     });
     
-    // Don't redirect immediately if there's a suggestion
-    if (suggestedCommunity) {
+    if (suggestedCommunity && !isLoading) { // Check isLoading here to prevent premature redirect if suggestion is set before API call finishes (though unlikely with await)
         setIsLoading(false);
     } else {
         router.push('/');
@@ -113,7 +110,7 @@ export function CreateProfileForm() {
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
-          <FormFieldItem name="name" label="Full Name" placeholder="Your full name" icon={<User className="h-4 w-4" />} form={form} />
+          <FormFieldItem name="name" label="Full Name" placeholder="Your full name" icon={<UserIcon className="h-4 w-4" />} form={form} />
           <FormFieldItem name="avatarUrl" label="Avatar URL (Optional)" placeholder="https://example.com/your-photo.png" icon={<ImageIcon className="h-4 w-4" />} form={form} type="url" />
           <FormFieldItem name="organization" label="Organization (Optional)" placeholder="e.g., State University, Tech Corp" icon={<Briefcase className="h-4 w-4" />} form={form} />
           
@@ -146,9 +143,9 @@ export function CreateProfileForm() {
             Save Profile
           </Button>
 
-          {suggestedCommunity && !isLoading && (
+          {suggestedCommunity && !isLoading && ( // Ensure not loading when showing this
             <div className="mt-4 p-4 border border-primary/20 bg-primary/5 rounded-md text-center">
-              <h3 className="text-md font-semibold flex items-center justify-center gap-2 text-primary mb-2">
+              <h3 className="text-md font-semibold flex items-center justify-center gap-2 text-primary mb-2 font-headline">
                 <Users className="h-5 w-5" />
                 Community Suggestion
               </h3>
@@ -166,7 +163,6 @@ export function CreateProfileForm() {
   );
 }
 
-// Helper component for form fields to reduce repetition
 interface FormFieldItemProps {
   name: keyof ProfileFormValues;
   label: string;

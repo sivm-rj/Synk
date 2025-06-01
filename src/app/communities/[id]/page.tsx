@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { SectionTitle } from '@/components/layout/section-title';
 import { ForumThreadCard } from '@/components/forums/forum-thread-card';
-import { CreateDiscussionForm } from '@/components/forums/create-discussion-form'; // For creating discussions within community
+import { CreateDiscussionForm } from '@/components/forums/create-discussion-form'; 
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -29,7 +29,7 @@ export default function CommunityDetailPage() {
   const router = useRouter();
   const communityId = params.id as string;
   
-  const [community, setCommunity] = React.useState<Community | null | undefined>(undefined); // undefined for loading
+  const [community, setCommunity] = React.useState<Community | null | undefined>(undefined); 
   const [communityThreads, setCommunityThreads] = React.useState<ForumThread[]>([]);
   const [currentYear, setCurrentYear] = React.useState<number | null>(null);
   const [isClient, setIsClient] = React.useState(false);

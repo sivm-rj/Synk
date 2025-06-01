@@ -2,16 +2,15 @@
 'use client';
 
 import * as React from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation'; // Added useRouter
 import { Header } from '@/components/layout/header';
 import { SectionTitle } from '@/components/layout/section-title';
 import { EventCard } from '@/components/events/event-card';
 import { ForumThreadCard } from '@/components/forums/forum-thread-card';
-import type { Event, ForumThread, UserProfile } from '@/types';
-import { Search, CalendarDays, MessageSquare, Loader2 } from 'lucide-react';
-import { mockEvents, mockForumThreads, mockCommunitiesData } from '@/lib/mock-data'; // Import from new location
+import type { Event, ForumThread, UserProfile, Community } from '@/types';
+import { Search, CalendarDays, MessageSquare, Users as UsersIcon, Loader2 } from 'lucide-react'; // Renamed Users to UsersIcon
+import { mockEvents, mockForumThreads, mockCommunitiesData } from '@/lib/mock-data'; 
 import { CommunityCard } from '@/components/communities/community-card';
-import type { Community } from '@/types';
 
 
 const initialMockUserProfile: UserProfile = {
@@ -28,7 +27,7 @@ const initialMockUserProfile: UserProfile = {
 export default function SearchResultsPage() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q');
-  const router = useRouter(); // Added to handle navigation and logout
+  const router = useRouter(); 
 
   const [filteredEvents, setFilteredEvents] = React.useState<Event[]>([]);
   const [filteredForumThreads, setFilteredForumThreads] = React.useState<ForumThread[]>([]);
@@ -48,7 +47,7 @@ export default function SearchResultsPage() {
       setCurrentYear(new Date().getFullYear());
       const loggedInStatus = localStorage.getItem('isLoggedIn') === 'true';
       if (!loggedInStatus) {
-        // router.replace('/login'); // Comment out for now, search should be public
+        // router.replace('/login'); // Search can be public
       } else {
         const storedProfile = localStorage.getItem('userProfile');
         if (storedProfile) {
@@ -117,7 +116,7 @@ export default function SearchResultsPage() {
     );
   }
 
-  const displayProfile = userProfile; // Can be null if not logged in
+  const displayProfile = userProfile; 
   const hasResults = filteredEvents.length > 0 || filteredForumThreads.length > 0 || filteredCommunities.length > 0;
   const totalResults = filteredEvents.length + filteredForumThreads.length + filteredCommunities.length;
 
@@ -132,12 +131,29 @@ export default function SearchResultsPage() {
           subtitle={query && !hasResults ? "No results found. Try a different search term." : (query ? `${totalResults} results found.` : "Please enter a search term in the header.")}
         />
 
+        {!query && !hasResults && (
+            <div className="text-center py-10">
+                <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2 font-headline">Search Synk</h3>
+                <p className="text-muted-foreground">Find events, communities, and discussions.</p>
+          </div>
+        )}
+        
+        {query && !hasResults && (
+            <div className="text-center py-10">
+                <Search className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-2 font-headline">No Results Found</h3>
+                <p className="text-muted-foreground">Try searching for something else or check your spelling.</p>
+          </div>
+        )}
+
+
         {query && hasResults && (
           <div className="space-y-10">
             {filteredCommunities.length > 0 && (
               <section>
                 <h2 className="text-2xl font-semibold mb-4 flex items-center font-headline">
-                  <Users className="mr-2 h-6 w-6 text-accent" /> Communities ({filteredCommunities.length})
+                  <UsersIcon className="mr-2 h-6 w-6 text-accent" /> Communities ({filteredCommunities.length})
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredCommunities.map(community => <CommunityCard key={community.id} community={community} />)}

@@ -19,7 +19,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Compass, CalendarDays, Users, PlusCircle, Loader2, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { mockCommunitiesData } from '@/lib/mock-data'; // Import from new location
+import { mockCommunitiesData } from '@/lib/mock-data'; 
 
 const initialMockUserProfile: UserProfile = {
   id: 'user123',
@@ -187,7 +187,7 @@ export default function HomePage() {
             ) : (
               <div className="text-center py-10">
                 <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <h3 className="text-xl font-semibold text-foreground mb-2">No Communities Yet</h3>
+                <h3 className="text-xl font-semibold text-foreground mb-2 font-headline">No Communities Yet</h3>
                 <p className="text-muted-foreground">Be the first to create one or check back later!</p>
               </div>
             )}

@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Header } from '@/components/layout/header';
-import { mockEvents } from '@/lib/mock-data'; // Import from new location
+import { mockEvents } from '@/lib/mock-data'; 
 import type { Event, UserProfile } from '@/types';
 import { CalendarDays, MapPin, Users, ArrowLeft, Briefcase, Users2, Loader2, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,7 @@ export default function EventDetailPage() {
   const params = useParams();
   const router = useRouter();
   const eventId = params.id as string;
-  const [event, setEvent] = React.useState<Event | null | undefined>(undefined); // undefined for loading
+  const [event, setEvent] = React.useState<Event | null | undefined>(undefined); 
   const [currentYear, setCurrentYear] = React.useState<number | null>(null);
   const [isClient, setIsClient] = React.useState(false);
   const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);

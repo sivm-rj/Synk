@@ -42,11 +42,9 @@ export function LoginForm() {
 
   async function onSubmit(data: LoginFormValues) {
     setIsLoading(true);
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     console.log('Login attempt with:', data);
-    // In a real app, you'd verify credentials here
 
     localStorage.setItem('isLoggedIn', 'true');
     toast({

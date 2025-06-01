@@ -27,7 +27,7 @@ const signupFormSchema = z.object({
   confirmPassword: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match.",
-  path: ["confirmPassword"], // Path to field to display the error
+  path: ["confirmPassword"], 
 });
 
 type SignupFormValues = z.infer<typeof signupFormSchema>;
@@ -49,16 +49,13 @@ export function SignupForm() {
 
   async function onSubmit(data: SignupFormValues) {
     setIsLoading(true);
-    // Simulate API call to register user
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     console.log('New User Signup Data:', { name: data.name, email: data.email });
-    // In a real app, you'd save the user to a database and handle auth tokens here
 
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userName', data.name);
     localStorage.setItem('userEmail', data.email);
-    // Clear any existing profile to force creation of a new one
     localStorage.removeItem('userProfile');
 
     toast({

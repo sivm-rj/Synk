@@ -37,7 +37,6 @@ export function Header({ userProfile, handleLogout }: HeaderProps) {
     setIsAuthenticated(authStatus);
   }, []);
   
-  // Re-check auth status if userProfile changes (e.g. after logout from another tab or explicit logout)
   React.useEffect(() => {
     const authStatus = localStorage.getItem('isLoggedIn') === 'true';
     setIsAuthenticated(authStatus);
@@ -53,7 +52,7 @@ export function Header({ userProfile, handleLogout }: HeaderProps) {
 
   const onLogoutClick = () => {
     handleLogout();
-    setIsProfileDialogOpen(false); // Close dialog after logout
+    setIsProfileDialogOpen(false); 
   };
 
   return (
