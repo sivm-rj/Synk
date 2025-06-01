@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import type { UserProfile } from '@/types';
-import { UserCircle, Image as ImageIcon, Briefcase, Info, Sparkles, CheckCircle, Users } from 'lucide-react';
+import { UserCircle, Image as ImageIcon, Briefcase, Info, Sparkles, CheckCircle, Users, User } from 'lucide-react';
 
 const profileFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -113,9 +113,9 @@ export function CreateProfileForm() {
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
-          <FormFieldItem name="name" label="Full Name" placeholder="Your full name" icon={<User />} form={form} />
-          <FormFieldItem name="avatarUrl" label="Avatar URL (Optional)" placeholder="https://example.com/your-photo.png" icon={<ImageIcon />} form={form} type="url" />
-          <FormFieldItem name="organization" label="Organization (Optional)" placeholder="e.g., State University, Tech Corp" icon={<Briefcase />} form={form} />
+          <FormFieldItem name="name" label="Full Name" placeholder="Your full name" icon={<User className="h-4 w-4" />} form={form} />
+          <FormFieldItem name="avatarUrl" label="Avatar URL (Optional)" placeholder="https://example.com/your-photo.png" icon={<ImageIcon className="h-4 w-4" />} form={form} type="url" />
+          <FormFieldItem name="organization" label="Organization (Optional)" placeholder="e.g., State University, Tech Corp" icon={<Briefcase className="h-4 w-4" />} form={form} />
           
           <div className="space-y-2">
             <Label htmlFor="bio">Bio</Label>
@@ -133,7 +133,7 @@ export function CreateProfileForm() {
             )}
           </div>
 
-          <FormFieldItem name="interests" label="Your Interests" placeholder="e.g., Coding, Hiking, Photography" icon={<Sparkles />} form={form} description="Separate interests with a comma." />
+          <FormFieldItem name="interests" label="Your Interests" placeholder="e.g., Coding, Hiking, Photography" icon={<Sparkles className="h-4 w-4" />} form={form} description="Separate interests with a comma." />
 
         </CardContent>
         <CardFooter className="flex-col items-stretch space-y-4">
